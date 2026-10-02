@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANG — Top Up Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --line: #d4d4d8;
+      --line-soft: #e4e4e7;
+      --ink: #111111;
+      --muted: #a1a1aa;
+      --price: #f43f5e;
+      --lavender: #f1f0ff;
+      --mint-1: #a7f3d0;
+      --mint-2: #e6fbf1;
+      --mint-ink: #0f5132;
+      --green: #1f8a3b;
+      --navy: #2a3aa8;
+      --red: #ef2b3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { background: #FFFFFF; }
+
+    body {
+      font-family: "Exo 2", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body.is-loading { overflow: hidden; }
+
+    svg { display: block; }
+
+    /* ============ LOADING SCREEN ============ */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loading-screen img {
+      width: 320px;
+      max-width: 60vw;
+      height: auto;
+    }
+
+    /* ============ LAYOUT ============ */
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 40px 0;
+    }
+
+    /* ============ HEADER ============ */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 88px;
+      padding: 0 40px 0 28px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 44px;
+    }
+
+    .header__logo img {
+      height: 62px;
+      width: auto;
+    }
+
+    .header__search {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .header { position: relative; }
+
+    .search {
+      width: 420px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 0 24px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    .search input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font: 500 17px "Exo 2", sans-serif;
+      color: var(--ink);
+      letter-spacing: .04em;
+    }
+
+    .search input::placeholder { color: var(--muted); }
+
+    .header__right {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .promo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: #52525b;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* ============ TOP AREA ============ */
+    .top {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 40px;
+      margin-top: 28px;
+      align-items: start;
+    }
+
+    .about {
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      padding: 28px 28px 32px;
+      background: #fff;
+    }
+
+    .about__head {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .game-icon--lg {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      flex: none;
+    }
+
+    .about__title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .badge-safe {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 20px 0 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .howto { margin-top: 22px; }
+
+    .howto h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .howto ol {
+      list-style: none;
+      color: #b4b4bb;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ============ GAME MENU ============ */
+    .games {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 260px));
+      gap: 24px 30px;
+      padding-top: 6px;
+    }
+
+    .game-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      height: 112px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      background: #fff;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .game-btn .game-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      flex: none;
+    }
+
+    .game-btn__text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .tag-topup {
+      background: var(--green);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .game-btn__name {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    /* ikon game placeholder */
+    .game-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .gi-blood  { background: linear-gradient(135deg, #22d3ee 0%, #0e7490 55%, #1e293b 100%); font-size: 30px; }
+    .gi-ff     { background: linear-gradient(135deg, #fde68a, #f59e0b 55%, #ef4444); font-size: 20px; }
+    .gi-val    { background: #10202e; }
+    .gi-pubg   { background: linear-gradient(135deg, #fb923c, #f59e0b 45%, #334155 46%, #1e293b); font-size: 15px; }
+    .gi-grow   { background: linear-gradient(135deg, #38bdf8, #2563eb 60%, #1e3a8a); font-size: 24px; }
+
+    /* ============ PRODUK ============ */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 36px 36px;
+      margin-top: 46px;
+      padding: 0 20px;
+    }
+
+    .card {
+      border: 1px solid var(--line-soft);
+      border-radius: 26px;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card__top {
+      height: 150px;
+      padding: 28px 24px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 22px;
+    }
+
+    .card__icon { width: 34px; height: 24px; }
+
+    .card__amount {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .card__bottom {
+      background: var(--lavender);
+      padding: 20px 22px 24px;
+    }
+
+    .card__price {
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .card__price b {
+      color: var(--price);
+      font-weight: 700;
+    }
+
+    .cashback {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 62px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--mint-1) 0%, var(--mint-2) 100%);
+      color: var(--mint-ink);
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .coin { width: 30px; height: 30px; flex: none; }
+
+    /* ============ PEMBAYARAN ============ */
+    .payment {
+      margin-top: 56px;
+      padding: 0 20px;
+    }
+
+    .payment__title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+
+    .pay-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 34px 36px;
+    }
+
+    .pay {
+      position: relative;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      border: 2px solid var(--navy);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .pay__badge {
+      position: absolute;
+      top: -2px;      /* menempel tepat pada garis tepi atas */
+      right: 18px;
+      background: var(--red);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 6px 12px 7px;
+      border-radius: 0 0 8px 8px;
+      transform: translateY(-2px);
+    }
+
+    /* wordmark placeholder tiap metode */
+    .logo-ovo     { font-size: 44px; font-weight: 800; color: #4c2a86; letter-spacing: -.02em; }
+    .logo-qris    { display: flex; align-items: baseline; gap: 8px; font-weight: 800; font-size: 34px; letter-spacing: .02em; }
+    .logo-qris small { font-size: 12px; font-weight: 500; color: #52525b; letter-spacing: 0; }
+    .logo-spay    { display: flex; align-items: center; gap: 8px; font-size: 32px; font-weight: 600; color: #ee4d2d; }
+    .logo-spay i  { width: 30px; height: 34px; border-radius: 7px; background: #ee4d2d; color: #fff; font: 800 20px/34px "Exo 2", sans-serif; text-align: center; }
+    .logo-dana    { display: flex; align-items: center; gap: 12px; font-size: 32px; font-weight: 800; letter-spacing: .14em; color: #118eea; }
+    .logo-dana i  { width: 38px; height: 38px; border-radius: 50%; background: #118eea; }
+    .logo-bca     { display: flex; align-items: center; gap: 10px; font-size: 38px; font-weight: 800; font-style: italic; color: #0a4ea3; }
+    .logo-bca i   { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #0a4ea3; }
+    .logo-gopay   { display: flex; align-items: center; gap: 10px; font-size: 36px; font-weight: 700; letter-spacing: -.02em; color: #111; }
+    .logo-gopay i { width: 32px; height: 32px; border-radius: 50%; background: #00aed6; }
+    .logo-mandiri { font-size: 34px; font-weight: 700; color: #0a4ea3; letter-spacing: -.02em; position: relative; }
+    .logo-mandiri::before { content: ""; position: absolute; left: 6px; right: 6px; top: -4px; height: 8px; border-top: 4px solid #f5a800; border-radius: 50%; }
+
+
+    /* ============ SLOT GAMBAR GAME ============ */
+    .game-icon { position: relative; }
+
+    .game-icon > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #fff;
+    }
+
+    .game-icon.has-img .game-icon__fallback { visibility: hidden; }
+
+    /* tombol game: efek timbul saat hover / ditekan */
+    .game-btn {
+      transition: transform .22s cubic-bezier(.3,1.4,.5,1), box-shadow .22s ease, border-color .22s ease;
+    }
+    .game-btn:hover {
+      transform: translateY(-4px);
+      border-color: var(--green);
+      box-shadow: 0 10px 22px rgba(31,138,59,.16);
+    }
+    .game-btn:active { transform: translateY(-1px) scale(.98); }
+
+    /* ============ EFEK PILIH (TIMBUL) ============ */
+    .card, .pay {
+      cursor: pointer;
+      outline: none;
+      transition: transform .25s cubic-bezier(.3,1.4,.5,1), box-shadow .25s ease,
+                  border-color .25s ease, background-color .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .card:not(.is-selected):hover, .pay:not(.is-selected):hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(60,60,120,.12);
+    }
+
+    .card:active, .pay:active { transform: translateY(-1px) scale(.98); }
+
+    .card:focus-visible, .pay:focus-visible { box-shadow: 0 0 0 3px rgba(42,58,168,.35); }
+
+    /* kartu produk terpilih */
+    .card.is-selected {
+      border-color: var(--navy);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 18px 32px rgba(42,58,168,.22);
+      animation: pop .42s cubic-bezier(.3,1.5,.5,1);
+    }
+    .card.is-selected .card__bottom { background: #e4e2ff; }
+
+    .card.is-selected::after {
+      content: "";
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--navy) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.500'/%3E%3C/svg%3E") center/16px no-repeat;
+    }
+    .card { position: relative; }
+
+    /* metode pembayaran terpilih */
+    .pay.is-selected {
+      background: #eef0ff;
+      border-color: var(--navy);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 0 0 3px rgba(42,58,168,.18), 0 16px 28px rgba(42,58,168,.24);
+      animation: pop .42s cubic-bezier(.3,1.5,.5,1);
+    }
+
+    .pay.is-selected::after {
+      content: "";
+      position: absolute;
+      right: 14px; bottom: 10px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--navy) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.500'/%3E%3C/svg%3E") center/15px no-repeat;
+    }
+
+    @keyframes pop {
+      0%   { transform: translateY(0) scale(1); }
+      55%  { transform: translateY(-12px) scale(1.06); }
+      100% { transform: translateY(-8px) scale(1.03); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .pay, .game-btn { transition: none; animation: none !important; }
+    }
+
+    /* ============ FOOTER ============ */
+    .footer {
+      margin-top: 80px;
+      padding: 0 0 40px;
+      text-align: center;
+      color: #52525b;
+    }
+
+    .footer__rule {
+      height: 2px;
+      max-width: 520px;
+      margin: 0 auto 28px;
+      background: linear-gradient(90deg, transparent, #f5a800 30%, #ffd24a 50%, #f5a800 70%, transparent);
+      border-radius: 2px;
+    }
+
+    .footer__logo {
+      height: 56px;
+      width: auto;
+      margin: 0 auto 10px;
+    }
+
+    .footer__credits {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .footer__name {
+      font-weight: 800;
+      background: linear-gradient(90deg, #b8860b, #f5a800 45%, #ffd24a 60%, #d99100);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #d99100;
+    }
+
+    .footer__sub {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #71717a;
+    }
+
+    .footer__chips {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 18px;
+    }
+
+    .footer__chips li {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8a6a00;
+      background: #fff8e1;
+      border: 1px solid #f5d77a;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    .footer__copy {
+      font-size: 12px;
+      color: #a1a1aa;
+    }
+  
+    /* =====================================================
+       TAMPILAN TABLET KECIL / LAPTOP SEMPIT
+       ===================================================== */
+    @media (max-width: 1100px) and (min-width: 901px) {
+      .page { padding: 24px 24px 0; }
+      .top { grid-template-columns: 340px 1fr; gap: 24px; }
+      .games { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+      .game-btn { padding: 0 14px; height: 100px; }
+      .products { gap: 24px; padding: 0; }
+      .payment { padding: 0; }
+      .pay-grid { gap: 28px 24px; }
+      .card__amount { font-size: 21px; }
+    }
+
+    /* =====================================================
+       TAMPILAN ANDROID / HP  (lebar layar sampai 900px)
+       ===================================================== */
+    @media (max-width: 900px) {
+
+      .page { padding: 14px 14px 0; }
+
+      /* Header: logo + promo + lonceng di atas, kolom cari di bawahnya */
+      .header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "logo right" "search search";
+        align-items: center;
+        gap: 12px 10px;
+        height: auto;
+        padding: 12px 16px 14px;
+        border-radius: 28px;
+      }
+      .header__logo { grid-area: logo; }
+      .header__logo img { height: 46px; }
+      .header__right { grid-area: right; justify-self: end; gap: 20px; }
+      .header__search {
+        grid-area: search;
+        position: static;
+        transform: none;
+      }
+      .search { width: 100%; height: 46px; padding: 0 16px 0 20px; }
+      .search input { font-size: 16px; }
+      .search svg { width: 24px; height: 24px; }
+      .promo { font-size: 12px; }
+      .promo svg { width: 24px; height: 24px; }
+      .header__right > svg { width: 28px; height: 32px; }
+
+      /* Kolom info game di atas, menu game di bawahnya */
+      .top { grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+      .about { border-radius: 26px; padding: 20px 18px 22px; }
+      .game-icon--lg { width: 62px; height: 62px; border-radius: 16px; }
+      .about__title { font-size: 21px; }
+      .badge-safe { margin-left: 2px; font-size: 14px; gap: 10px; }
+      .badge-safe svg { width: 32px; height: 35px; }
+      .howto ol { font-size: 13px; }
+
+      .games { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding-top: 0; }
+      .game-btn {
+        height: auto;
+        min-height: 82px;
+        padding: 10px 12px;
+        gap: 10px;
+        border-radius: 26px;
+      }
+      .game-btn .game-icon { width: 46px; height: 46px; border-radius: 12px; }
+      .game-btn .game-icon svg { width: 28px; height: 28px; }
+      .game-btn__name { font-size: 14px; }
+      .tag-topup { font-size: 10px; padding: 2px 9px; }
+
+      /* Produk: 2 kolom */
+      .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 26px; padding: 0; }
+      .card { border-radius: 20px; }
+      .card__top { height: 108px; padding: 16px 14px 14px; }
+      .card__amount { font-size: 16px; font-weight: 700; }
+      .card__bottom { padding: 12px 10px 14px; }
+      .card__price { font-size: 13px; margin-bottom: 8px; }
+      .cashback { font-size: 13px; min-height: 46px; padding: 6px 9px; gap: 7px; border-radius: 12px; }
+      .coin { width: 22px; height: 22px; }
+      .card.is-selected::after { top: 10px; right: 10px; width: 22px; height: 22px; background-size: 13px; }
+
+      /* Pembayaran: 2 kolom, kotak terakhir selebar layar */
+      .payment { margin-top: 34px; padding: 0; }
+      .payment__title { font-size: 19px; margin-bottom: 22px; }
+      .pay-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
+      .pay { height: 72px; padding: 0 14px; border-radius: 12px; }
+      .pay:last-child { grid-column: 1 / -1; }
+      .pay__badge { right: 10px; font-size: 10px; padding: 5px 9px 6px; border-radius: 0 0 7px 7px; }
+      .pay.is-selected::after { right: 10px; bottom: 8px; width: 20px; height: 20px; background-size: 12px; }
+
+      .logo-ovo { font-size: 34px; }
+      .logo-qris { font-size: 26px; gap: 6px; }
+      .logo-qris small { font-size: 10px; }
+      .logo-spay { font-size: 24px; gap: 6px; }
+      .logo-spay i { width: 24px; height: 28px; font-size: 16px; line-height: 28px; border-radius: 6px; }
+      .logo-dana { font-size: 21px; gap: 8px; }
+      .logo-dana i { width: 28px; height: 28px; }
+      .logo-bca { font-size: 28px; gap: 8px; }
+      .logo-bca i { width: 26px; height: 26px; border-width: 3px; }
+      .logo-gopay { font-size: 26px; gap: 8px; }
+      .logo-gopay i { width: 24px; height: 24px; }
+      .logo-mandiri { font-size: 26px; }
+
+      /* Footer */
+      .footer { margin-top: 56px; padding-bottom: 32px; }
+      .footer__rule { max-width: 80%; margin-bottom: 22px; }
+      .footer__logo { height: 48px; }
+      .footer__credits { font-size: 16px; }
+      .footer__sub { font-size: 13px; }
+
+      /* Layar sentuh tidak punya hover: matikan efek angkat agar tidak "nyangkut" */
+      .card:not(.is-selected):hover,
+      .pay:not(.is-selected):hover,
+      .game-btn:hover { transform: none; box-shadow: none; }
+      .game-btn:hover { border-color: var(--line); }
+    }
+
+    /* HP layar sangat kecil */
+    @media (max-width: 360px) {
+      .card__amount { font-size: 15px; }
+      .cashback { font-size: 12px; }
+      .game-btn__name { font-size: 13px; }
+    }
+  </style>
+</head>
+
+<body class="is-loading">
+
+  <!-- ============ LOADING SCREEN ============ -->
+  <div id="loading-screen">
+    <img src="assets/logo-anggara.png" alt="ANG ANGGARA">
+  </div>
+
+  <!-- ============ HALAMAN UTAMA ============ -->
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <a class="header__logo" href="#" aria-label="ANG">
+        <img src="assets/logo-ang.png" alt="ANG">
+      </a>
+
+      <div class="header__search">
+        <label class="search">
+          <input type="text" placeholder="Cari Game....">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/>
+          </svg>
+        </label>
+      </div>
+
+      <div class="header__right">
+        <a class="promo" href="#">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#6b6b73" aria-hidden="true">
+            <path d="M3 12.2V4.5A1.5 1.5 0 0 1 4.5 3h7.7a1.5 1.5 0 0 1 1.06.44l7.3 7.3a1.5 1.5 0 0 1 0 2.12l-7.7 7.7a1.5 1.5 0 0 1-2.12 0l-7.3-7.3A1.5 1.5 0 0 1 3 12.2z"/>
+            <circle cx="8" cy="8" r="1.7" fill="#fff"/>
+          </svg>
+          <span>Promo</span>
+        </a>
+        <svg width="40" height="46" viewBox="0 0 24 28" fill="#000" aria-label="Notifikasi">
+          <path d="M12 1.5a1.7 1.7 0 0 1 1.7 1.7v.6c3.3.8 5.6 3.7 5.6 7.2v5l2.1 3.2c.5.8 0 1.8-.9 1.8H3.5c-.9 0-1.4-1-.9-1.8L4.7 16v-5c0-3.5 2.3-6.4 5.6-7.2v-.6A1.7 1.7 0 0 1 12 1.5z"/>
+          <path d="M9.2 23.3h5.6a2.8 2.8 0 0 1-5.6 0z"/>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Kolom kiri + menu game -->
+    <section class="top">
+
+      <article class="about">
+        <div class="about__head">
+          <div class="game-icon game-icon--lg gi-blood" aria-hidden="true"><img src="assets/games/bloodstrike.png" alt="Blood Strike" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="game-icon__fallback">BS</span></div>
+          <h1 class="about__title">Blood Strike</h1>
+        </div>
+
+        <div class="badge-safe">
+          <svg width="40" height="44" viewBox="0 0 24 26" aria-hidden="true">
+            <path d="M12 1l9 3.2v7.4c0 6-4 10.4-9 12.4C7 22 3 17.600 3 11.600V4.200z" fill="#6b6b73"/>
+            <path d="M7.500 12.800l3 3 6-6.200" fill="none" stroke="#fff" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Official Supply &amp; Safe</span>
+        </div>
+
+        <div class="howto">
+          <h2>Cara Top Up Blood Strike</h2>
+          <ol>
+            <li>1. Pilih Produk yang kamu inginkan</li>
+            <li>2. Selesaikan pembayaran</li>
+            <li>3. Produk akan ditambahkan ke akun Blood Strike kamu</li>
+          </ol>
+        </div>
+      </article>
+
+      <nav class="games" aria-label="Game lainnya">
+        <a class="game-btn" href="#">
+          <div class="game-icon gi-ff" aria-hidden="true"><img src="assets/games/freefire.png" alt="Free Fire" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="game-icon__fallback">FF</span></div>
+          <div class="game-btn__text"><span class="tag-topup">TOP UP</span><span class="game-btn__name">Free Fire</span></div>
+        </a>
+
+        <a class="game-btn" href="#">
+          <div class="game-icon gi-val" aria-hidden="true"><img src="assets/games/valorant.png" alt="Valorant" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="game-icon__fallback"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 5l8.500 11H6.500L3 11.500zM21 5l-9 11.500V16h5.500L21 11.500z" fill="#ff4655"/></svg></span></div>
+          <div class="game-btn__text"><span class="tag-topup">TOP UP</span><span class="game-btn__name">Valorant</span></div>
+        </a>
+
+        <a class="game-btn" href="#">
+          <div class="game-icon gi-pubg" aria-hidden="true"><img src="assets/games/pubg.png" alt="PUBG Mobile" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="game-icon__fallback">PUBG</span></div>
+          <div class="game-btn__text"><span class="tag-topup">TOP UP</span><span class="game-btn__name">PUBG Mobile</span></div>
+        </a>
+
+        <a class="game-btn" href="#">
+          <div class="game-icon gi-grow" aria-hidden="true"><img src="assets/games/growtopia.png" alt="Growtopia" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="game-icon__fallback">G</span></div>
+          <div class="game-btn__text"><span class="tag-topup">TOP UP</span><span class="game-btn__name">Growtopia</span></div>
+        </a>
+      </nav>
+    </section>
+
+    <!-- Grid produk -->
+    <main>
+      <section class="products" id="product-group" role="radiogroup" aria-label="Pilih nominal top up">
+
+        <!-- Simbol ikon emas & koin dipakai ulang -->
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <defs>
+            <symbol id="gold" viewBox="0 0 34 24">
+              <path d="M3 17l9-9 18 2-3 9-13 4z" fill="#c9a227"/>
+              <path d="M12 8l18 2-1.500 4.500L10.500 12z" fill="#f4d35e"/>
+              <path d="M3 17l7.500-5 1.500 6z" fill="#8c6d12"/>
+            </symbol>
+            <symbol id="coin" viewBox="0 0 30 30">
+              <circle cx="15" cy="15" r="14" fill="#f59e0b" stroke="#7c3f06" stroke-width="1.500"/>
+              <circle cx="15" cy="15" r="9.500" fill="#fbbf24" stroke="#7c3f06" stroke-width="1.500"/>
+              <path d="M10.500 12.500a5 5 0 0 1 9 0" fill="none" stroke="#fde68a" stroke-width="1.500" stroke-linecap="round"/>
+            </symbol>
+          </defs>
+        </svg>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">100 + 5 Golds</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp13.400</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp402 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">300 + 20 Golds</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp40.100</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp1.203 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">500 + 40 Golds</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp67.000</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp2.010 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">600 + 45 Gold</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp80.312</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp2.409 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">800 + 60 Gold</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp107.018</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp3.210 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">1000 + 100 Golds</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp133.400</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp4.002 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">1200 + 110 Gold</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp160.070</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp4.802 Coins</span></div>
+          </div>
+        </article>
+
+        <article class="card" role="radio" aria-checked="false" tabindex="0">
+          <div class="card__top">
+            <svg class="card__icon"><use href="#gold"/></svg>
+            <h3 class="card__amount">1500 + 140 Gold</h3>
+          </div>
+          <div class="card__bottom">
+            <p class="card__price">Dari <b>Rp200.360</b></p>
+            <div class="cashback"><svg class="coin"><use href="#coin"/></svg><span>+Rp6.010 Coins</span></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Metode pembayaran -->
+      <section class="payment" aria-label="Metode pembayaran">
+        <h2 class="payment__title">Metode Pembayaran</h2>
+
+        <div class="pay-grid" id="pay-group" role="radiogroup">
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-ovo">OVO</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-qris">QRIS <small>QRIS</small></span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-spay"><i>S</i>Pay</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-dana"><i></i>DANA</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-bca"><i></i>BCA</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-gopay"><i></i>gopay</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-mandiri">mandiri</span></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__rule"></div>
+      <img class="footer__logo" src="assets/logo-ang.png" alt="ANG">
+      <p class="footer__credits">Credits: <span class="footer__name">[ Fajar Anggara Putra ]</span></p>
+      <p class="footer__sub">Design &amp; Development untuk katalog topup</p>
+      <ul class="footer__chips">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 ANG Semua hak dilindungi.</p>
+    </footer>
+  </div>
+
+  <!-- ============ SCRIPT TRANSISI LOADING ============ -->
+  <script>
+    (function () {
+      var loader = document.getElementById('loading-screen');
+
+      setTimeout(function () {
+        loader.classList.add('fade-out');          // fade-out via CSS opacity transition
+        document.body.classList.remove('is-loading');
+
+        loader.addEventListener('transitionend', function () {
+          loader.style.display = 'none';           // lepas dari DOM flow setelah fade selesai
+        }, { once: true });
+      }, 5000);                                    // tepat 5 detik
+    })();
+  </script>
+
+  <!-- ============ SCRIPT PILIH PRODUK & PEMBAYARAN ============ -->
+  <script>
+    (function () {
+      function setupGroup(groupId, itemSelector) {
+        var group = document.getElementById(groupId);
+        var items = group.querySelectorAll(itemSelector);
+
+        function select(item) {
+          items.forEach(function (el) {
+            el.classList.remove('is-selected');
+            el.setAttribute('aria-checked', 'false');
+          });
+          // restart animasi walau item yang sama diklik lagi
+          void item.offsetWidth;
+          item.classList.add('is-selected');
+          item.setAttribute('aria-checked', 'true');
+        }
+
+        items.forEach(function (item) {
+          item.addEventListener('click', function () { select(item); });
+          item.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(item); }
+          });
+        });
+      }
+
+      setupGroup('product-group', '.card');
+      setupGroup('pay-group', '.pay');
+    })();
+  </script>
+</body>
+</html>
