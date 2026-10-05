@@ -267,7 +267,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 36px 36px;
-      margin-top: 46px;
+      margin-top: 0;
       padding: 0 20px;
     }
 
@@ -478,73 +478,7 @@
       .card, .pay, .game-btn { transition: none; animation: none !important; }
     }
 
-    /* ============ FOOTER ============ */
-    .footer {
-      margin-top: 80px;
-      padding: 0 0 40px;
-      text-align: center;
-      color: #52525b;
-    }
 
-    .footer__rule {
-      height: 2px;
-      max-width: 520px;
-      margin: 0 auto 28px;
-      background: linear-gradient(90deg, transparent, #f5a800 30%, #ffd24a 50%, #f5a800 70%, transparent);
-      border-radius: 2px;
-    }
-
-    .footer__logo {
-      height: 56px;
-      width: auto;
-      margin: 0 auto 10px;
-    }
-
-    .footer__credits {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .footer__name {
-      font-weight: 800;
-      background: linear-gradient(90deg, #b8860b, #f5a800 45%, #ffd24a 60%, #d99100);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: #d99100;
-    }
-
-    .footer__sub {
-      margin-top: 6px;
-      font-size: 14px;
-      color: #71717a;
-    }
-
-    .footer__chips {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 16px 0 18px;
-    }
-
-    .footer__chips li {
-      font-size: 12px;
-      font-weight: 600;
-      color: #8a6a00;
-      background: #fff8e1;
-      border: 1px solid #f5d77a;
-      padding: 5px 14px;
-      border-radius: 999px;
-    }
-
-    .footer__copy {
-      font-size: 12px;
-      color: #a1a1aa;
-    }
-  
     /* =====================================================
        TAMPILAN TABLET KECIL / LAPTOP SEMPIT
        ===================================================== */
@@ -615,7 +549,7 @@
       .tag-topup { font-size: 10px; padding: 2px 9px; }
 
       /* Produk: 2 kolom */
-      .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 26px; padding: 0; }
+      .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 0; padding: 0; }
       .card { border-radius: 20px; }
       .card__top { height: 108px; padding: 16px 14px 14px; }
       .card__amount { font-size: 16px; font-weight: 700; }
@@ -647,13 +581,6 @@
       .logo-gopay i { width: 24px; height: 24px; }
       .logo-mandiri { font-size: 26px; }
 
-      /* Footer */
-      .footer { margin-top: 56px; padding-bottom: 32px; }
-      .footer__rule { max-width: 80%; margin-bottom: 22px; }
-      .footer__logo { height: 48px; }
-      .footer__credits { font-size: 16px; }
-      .footer__sub { font-size: 13px; }
-
       /* Layar sentuh tidak punya hover: matikan efek angkat agar tidak "nyangkut" */
       .card:not(.is-selected):hover,
       .pay:not(.is-selected):hover,
@@ -666,6 +593,241 @@
       .card__amount { font-size: 15px; }
       .cashback { font-size: 12px; }
       .game-btn__name { font-size: 13px; }
+    }
+  
+    /* =====================================================
+       FITUR BARU: STOK, INFO PEMBELIAN, KONTAK, CTA, FOOTER
+       ===================================================== */
+    .section-title { font-size: 22px; font-weight: 700; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin: 46px 20px 24px;
+    }
+    .section-head .section-title { margin: 0; }
+    .payment .section-title { margin-bottom: 28px; }
+
+    /* ---- stok ---- */
+    .card__meta { display: flex; align-items: center; gap: 10px; }
+
+    .stock {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 5px 11px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .stock::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .stock--ready { color: #15803d; background: #e8f8ee; }
+    .stock--low   { color: #b45309; background: #fff3dc; }
+    .stock--out   { color: #b91c1c; background: #fde8e8; }
+
+    .stock-legend { list-style: none; display: flex; gap: 8px; }
+    .stock-legend .stock { font-size: 11px; padding: 4px 10px; }
+
+    .card.is-out { opacity: .6; cursor: not-allowed; }
+    .card.is-out .card__bottom { background: #f4f4f5; }
+    .card.is-out:hover, .card.is-out:active { transform: none; box-shadow: none; }
+
+    /* ---- informasi pembelian ---- */
+    .info { margin-top: 64px; padding: 0 20px; }
+    .info .section-title { margin-bottom: 24px; }
+
+    .info__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 26px 26px 28px;
+      background: #fff;
+    }
+
+    .info-card__head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .info-card__head h3 { font-size: 18px; font-weight: 700; }
+
+    .info-card__icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: #eef0ff;
+      color: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      flex: none;
+    }
+
+    .info-card ol, .info-card ul {
+      padding-left: 20px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #52525b;
+    }
+    .info-card li + li { margin-top: 6px; }
+    .info-card ol li::marker { color: var(--navy); font-weight: 700; }
+    .info-card ul li::marker { color: #b4b4bb; }
+    .info-card b { color: var(--ink); font-weight: 700; }
+
+    /* ---- kontak toko ---- */
+    .contact { margin-top: 56px; padding: 0 20px; }
+    .contact .section-title { margin-bottom: 24px; }
+
+    .contact__box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+      padding: 30px 34px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: #fff;
+    }
+
+    .contact__list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 32px;
+    }
+
+    .contact__item { display: flex; align-items: center; gap: 14px; color: inherit; text-decoration: none; }
+    a.contact__item:hover .contact__value { color: var(--navy); }
+
+    .contact__icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #f4f4f5;
+      color: #3f3f46;
+      display: flex; align-items: center; justify-content: center;
+      flex: none;
+    }
+
+    .contact__label { display: block; font-size: 12px; font-weight: 600; color: #8b8b94; }
+    .contact__value { display: block; font-size: 15px; font-weight: 600; margin-top: 1px; }
+
+    /* ---- tombol ---- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 52px;
+      padding: 0 32px;
+      border: 0;
+      border-radius: 999px;
+      font: 700 16px "Exo 2", "Segoe UI", sans-serif;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+    }
+    .btn--primary { background: var(--navy); }
+    .btn--primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(42,58,168,.3); }
+    .btn--primary:active:not(:disabled) { transform: scale(.97); }
+    .btn--primary:disabled { background: #d4d4d8; cursor: not-allowed; }
+    .btn--wa { background: var(--green); }
+    .btn--wa:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(31,138,59,.3); }
+    .btn:focus-visible { outline: 3px solid rgba(42,58,168,.4); outline-offset: 2px; }
+
+    /* ---- bar pesanan (CTA tetap di bawah layar) ---- */
+    .checkout {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: min(960px, calc(100% - 48px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 10px 10px 30px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 14px 40px rgba(20, 20, 60, .16);
+    }
+
+    .checkout__summary { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .checkout__label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #8b8b94; }
+    .checkout__text { font-size: 16px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .checkout__text.is-empty { font-weight: 500; color: #8b8b94; }
+
+    .page::after { content: ""; display: block; height: 96px; }
+
+    /* ---- footer kecil ---- */
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 56px;
+      padding: 16px 20px 18px;
+      border-top: 1px solid var(--line-soft);
+      font-size: 12px;
+      color: #8b8b94;
+    }
+    .footer__credits { font-weight: 600; color: #6b6b73; }
+
+    /* ---- tablet kecil ---- */
+    @media (max-width: 1100px) and (min-width: 901px) {
+      .section-head { margin-left: 0; margin-right: 0; }
+      .info, .contact { padding: 0; }
+      .info__grid { gap: 18px; }
+      .info-card { padding: 22px 20px; }
+    }
+
+    /* ---- HP / Android ---- */
+    @media (max-width: 900px) {
+      .section-title { font-size: 19px; }
+      .section-head { margin: 28px 2px 16px; }
+      .stock { font-size: 11px; padding: 4px 9px; gap: 5px; }
+      .stock::before { width: 6px; height: 6px; }
+      .card__meta { gap: 8px; }
+      .stock-legend { gap: 6px; }
+      .stock-legend .stock { font-size: 10px; padding: 3px 8px; }
+
+      .info { margin-top: 44px; padding: 0; }
+      .info .section-title, .contact .section-title { margin-bottom: 16px; }
+      .info__grid { grid-template-columns: 1fr; gap: 14px; }
+      .info-card { border-radius: 22px; padding: 20px 18px 22px; }
+      .info-card__head h3 { font-size: 16px; }
+      .info-card ol, .info-card ul { font-size: 14px; }
+
+      .contact { margin-top: 44px; padding: 0; }
+      .contact__box { grid-template-columns: 1fr; gap: 22px; padding: 22px 18px; border-radius: 24px; }
+      .contact__list { grid-template-columns: 1fr; gap: 16px; }
+      .contact__icon { width: 40px; height: 40px; }
+      .contact__box .btn { width: 100%; height: 48px; }
+
+      .checkout {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        transform: none;
+        width: auto;
+        gap: 12px;
+        padding: 8px 8px 8px 18px;
+        border-radius: 30px;
+      }
+      .checkout__text { font-size: 13px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+      .checkout .btn { height: 46px; padding: 0 18px; font-size: 14px; }
+      .checkout .btn svg { width: 18px; height: 18px; }
+      .page::after { height: 88px; }
+
+      .footer { flex-direction: column; gap: 4px; margin-top: 40px; padding: 14px 10px 16px; text-align: center; }
+    }
+
+    @media (max-width: 360px) {
+      .stock-legend { display: none; }
+      .checkout .btn span { display: none; }
+      .checkout .btn { padding: 0 16px; }
     }
   </style>
 </head>
@@ -762,6 +924,15 @@
 
     <!-- Grid produk -->
     <main>
+      <div class="section-head">
+        <h2 class="section-title">Pilih Nominal Top Up</h2>
+        <ul class="stock-legend" aria-label="Keterangan stok">
+          <li><span class="stock stock--ready">Tersedia</span></li>
+          <li><span class="stock stock--low">Terbatas</span></li>
+          <li><span class="stock stock--out">Habis</span></li>
+        </ul>
+      </div>
+
       <section class="products" id="product-group" role="radiogroup" aria-label="Pilih nominal top up">
 
         <!-- Simbol ikon emas & koin dipakai ulang -->
@@ -780,9 +951,9 @@
           </defs>
         </svg>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="ready">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--ready">Tersedia</span></div>
             <h3 class="card__amount">100 + 5 Golds</h3>
           </div>
           <div class="card__bottom">
@@ -791,9 +962,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="ready">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--ready">Tersedia</span></div>
             <h3 class="card__amount">300 + 20 Golds</h3>
           </div>
           <div class="card__bottom">
@@ -802,9 +973,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="ready">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--ready">Tersedia</span></div>
             <h3 class="card__amount">500 + 40 Golds</h3>
           </div>
           <div class="card__bottom">
@@ -813,9 +984,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="low">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--low">Sisa 12</span></div>
             <h3 class="card__amount">600 + 45 Gold</h3>
           </div>
           <div class="card__bottom">
@@ -824,9 +995,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="ready">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--ready">Tersedia</span></div>
             <h3 class="card__amount">800 + 60 Gold</h3>
           </div>
           <div class="card__bottom">
@@ -835,9 +1006,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="low">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--low">Sisa 5</span></div>
             <h3 class="card__amount">1000 + 100 Golds</h3>
           </div>
           <div class="card__bottom">
@@ -846,9 +1017,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card" role="radio" aria-checked="false" tabindex="0" data-stock="ready">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--ready">Tersedia</span></div>
             <h3 class="card__amount">1200 + 110 Gold</h3>
           </div>
           <div class="card__bottom">
@@ -857,9 +1028,9 @@
           </div>
         </article>
 
-        <article class="card" role="radio" aria-checked="false" tabindex="0">
+        <article class="card is-out" role="radio" aria-checked="false" tabindex="-1" data-stock="out" aria-disabled="true">
           <div class="card__top">
-            <svg class="card__icon"><use href="#gold"/></svg>
+            <div class="card__meta"><svg class="card__icon"><use href="#gold"/></svg><span class="stock stock--out">Habis</span></div>
             <h3 class="card__amount">1500 + 140 Gold</h3>
           </div>
           <div class="card__bottom">
@@ -871,32 +1042,85 @@
 
       <!-- Metode pembayaran -->
       <section class="payment" aria-label="Metode pembayaran">
-        <h2 class="payment__title">Metode Pembayaran</h2>
+        <h2 class="section-title">Metode Pembayaran</h2>
 
         <div class="pay-grid" id="pay-group" role="radiogroup">
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-ovo">OVO</span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-qris">QRIS <small>QRIS</small></span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-spay"><i>S</i>Pay</span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-dana"><i></i>DANA</span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-bca"><i></i>BCA</span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-gopay"><i></i>gopay</span></div>
-          <div class="pay" role="radio" aria-checked="false" tabindex="0"><span class="pay__badge">Termurah</span><span class="logo-mandiri">mandiri</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="OVO"><span class="pay__badge">Termurah</span><span class="logo-ovo">OVO</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="QRIS"><span class="pay__badge">Termurah</span><span class="logo-qris">QRIS <small>QRIS</small></span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="ShopeePay"><span class="pay__badge">Termurah</span><span class="logo-spay"><i>S</i>Pay</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="DANA"><span class="pay__badge">Termurah</span><span class="logo-dana"><i></i>DANA</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="BCA"><span class="pay__badge">Termurah</span><span class="logo-bca"><i></i>BCA</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="GoPay"><span class="pay__badge">Termurah</span><span class="logo-gopay"><i></i>gopay</span></div>
+          <div class="pay" role="radio" aria-checked="false" tabindex="0" data-name="Mandiri"><span class="pay__badge">Termurah</span><span class="logo-mandiri">mandiri</span></div>
+        </div>
+      </section>
+      <!-- Informasi pembelian -->
+      <section class="info" aria-label="Informasi pembelian">
+        <h2 class="section-title">Informasi Pembelian</h2>
+        <div class="info__grid">
+
+          <article class="info-card">
+            <div class="info-card__head"><span class="info-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg></span><h3>Cara Memesan</h3></div>
+            <ol>
+              <li>Pilih nominal top up yang stoknya tersedia.</li>
+              <li>Pilih metode pembayaran.</li>
+              <li>Tekan <b>Beli Sekarang</b>, kamu akan diarahkan ke WhatsApp admin dengan pesanan terisi otomatis.</li>
+              <li>Kirim ID game kamu, lalu selesaikan pembayaran.</li>
+            </ol>
+          </article>
+
+          <article class="info-card">
+            <div class="info-card__head"><span class="info-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/></svg></span><h3>Pembayaran</h3></div>
+            <ul>
+              <li>E-wallet: OVO, DANA, GoPay, ShopeePay.</li>
+              <li>QRIS dari semua aplikasi pembayaran.</li>
+              <li>Transfer bank: BCA dan Mandiri.</li>
+              <li>Bayar sesuai total dari admin, lalu kirim bukti pembayaran lewat WhatsApp.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <div class="info-card__head"><span class="info-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><h3>Pengiriman</h3></div>
+            <ul>
+              <li>Produk digital, langsung dikirim ke akun game lewat ID kamu.</li>
+              <li>Estimasi 1&ndash;10 menit setelah pembayaran dikonfirmasi.</li>
+              <li>Pastikan ID game sudah benar sebelum membayar.</li>
+            </ul>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Kontak toko -->
+      <section class="contact" aria-label="Kontak toko">
+        <h2 class="section-title">Kontak Toko</h2>
+        <div class="contact__box">
+          <ul class="contact__list">
+            <li><a class="contact__item" href="https://wa.me/6281234567890" data-wa-link target="_blank" rel="noopener">
+              <span class="contact__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.6-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg></span>
+              <span><span class="contact__label">WhatsApp</span><span class="contact__value">+62 812-3456-7890</span></span></a></li>
+            <li><a class="contact__item" href="https://instagram.com/username_kamu" target="_blank" rel="noopener">
+              <span class="contact__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></span>
+              <span><span class="contact__label">Instagram</span><span class="contact__value">@angstore</span></span></a></li>
+            <li><a class="contact__item" href="https://tiktok.com/@username_kamu" target="_blank" rel="noopener">
+              <span class="contact__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg></span>
+              <span><span class="contact__label">TikTok</span><span class="contact__value">@angstore</span></span></a></li>
+            <li><div class="contact__item">
+              <span class="contact__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+              <span><span class="contact__label">Alamat</span><span class="contact__value">[Jl.Panyingkiran]</span></span></div></li>
+            <li><div class="contact__item">
+              <span class="contact__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+              <span><span class="contact__label">Jam Operasional</span><span class="contact__value">Setiap hari, 08.00&ndash;22.00 WIB</span></span></div></li>
+          </ul>
+          <a class="btn btn--wa" href="https://wa.me/6281234567890" data-wa-link data-wa-text="Halo ANG ANGGARA, saya mau tanya soal top up." target="_blank" rel="noopener">Hubungi Kami</a>
         </div>
       </section>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="footer__rule"></div>
-      <img class="footer__logo" src="assets/logo-ang.png" alt="ANG">
-      <p class="footer__credits">Credits: <span class="footer__name">[ Fajar Anggara Putra ]</span></p>
-      <p class="footer__sub">Design &amp; Development untuk katalog topup</p>
-      <ul class="footer__chips">
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-      </ul>
-      <p class="footer__copy">&copy; 2026 ANG Semua hak dilindungi.</p>
+      <span>&copy; 2026 ANG </span>
+      <span class="footer__credits">Credits: Fajar Anggara</span>
     </footer>
   </div>
 
@@ -916,22 +1140,71 @@
     })();
   </script>
 
-  <!-- ============ SCRIPT PILIH PRODUK & PEMBAYARAN ============ -->
+  <!-- ============ BAR PESANAN (CALL TO ACTION) ============ -->
+  <div class="checkout" role="region" aria-label="Ringkasan pesanan">
+    <div class="checkout__summary" aria-live="polite">
+      <span class="checkout__label">Pesanan kamu</span>
+      <span class="checkout__text is-empty" id="checkout-text">Pilih nominal &amp; metode pembayaran</span>
+    </div>
+    <button class="btn btn--primary" id="buy-btn" type="button" disabled><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1 13H5z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span>Beli Sekarang</span></button>
+  </div>
+
+  <!-- ============ SCRIPT PILIH PRODUK, PEMBAYARAN & PESAN ============ -->
   <script>
     (function () {
-      function setupGroup(groupId, itemSelector) {
-        var group = document.getElementById(groupId);
-        var items = group.querySelectorAll(itemSelector);
+      // ====== UBAH DI SINI ======
+      var WA_NUMBER = '6281234567890';   // format 62..., tanpa + dan tanpa spasi
+      var GAME_NAME = 'Blood Strike';
+      // ==========================
+
+      var picked = { product: null, pay: null };
+      var textEl = document.getElementById('checkout-text');
+      var buyBtn = document.getElementById('buy-btn');
+
+      function waUrl(msg) {
+        return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+      }
+
+      // semua link WhatsApp memakai nomor yang sama
+      document.querySelectorAll('[data-wa-link]').forEach(function (a) {
+        a.href = waUrl(a.getAttribute('data-wa-text') || 'Halo ANG ANGGARA, saya mau tanya.');
+      });
+
+      function info() {
+        var p = picked.product, y = picked.pay;
+        return {
+          amount: p ? p.querySelector('.card__amount').textContent.trim() : '',
+          price:  p ? p.querySelector('.card__price b').textContent.trim() : '',
+          pay:    y ? y.getAttribute('data-name') : ''
+        };
+      }
+
+      function refresh() {
+        var i = info(), msg;
+        if (!i.amount && !i.pay)      msg = 'Pilih nominal & metode pembayaran';
+        else if (i.amount && !i.pay)  msg = i.amount + ' \u2013 ' + i.price + '. Pilih metode pembayaran.';
+        else if (!i.amount && i.pay)  msg = 'Bayar via ' + i.pay + '. Pilih nominal top up.';
+        else                          msg = i.amount + ' \u2013 ' + i.price + ' via ' + i.pay;
+
+        textEl.textContent = msg;
+        textEl.classList.toggle('is-empty', !(i.amount && i.pay));
+        buyBtn.disabled = !(i.amount && i.pay);
+      }
+
+      function setupGroup(groupId, itemSelector, key) {
+        var items = document.getElementById(groupId).querySelectorAll(itemSelector);
 
         function select(item) {
+          if (item.getAttribute('aria-disabled') === 'true') return;   // stok habis
           items.forEach(function (el) {
             el.classList.remove('is-selected');
             el.setAttribute('aria-checked', 'false');
           });
-          // restart animasi walau item yang sama diklik lagi
-          void item.offsetWidth;
+          void item.offsetWidth;                                       // ulang animasi
           item.classList.add('is-selected');
           item.setAttribute('aria-checked', 'true');
+          picked[key] = item;
+          refresh();
         }
 
         items.forEach(function (item) {
@@ -942,8 +1215,19 @@
         });
       }
 
-      setupGroup('product-group', '.card');
-      setupGroup('pay-group', '.pay');
+      setupGroup('product-group', '.card', 'product');
+      setupGroup('pay-group', '.pay', 'pay');
+
+      buyBtn.addEventListener('click', function () {
+        var i = info();
+        if (!i.amount || !i.pay) return;
+        var msg = 'Halo ANG ANGGARA, saya mau top up ' + GAME_NAME + '.\n' +
+                  '- Nominal: ' + i.amount + '\n' +
+                  '- Harga: ' + i.price + '\n' +
+                  '- Pembayaran: ' + i.pay + '\n' +
+                  '- ID Game: (saya kirim setelah ini)';
+        window.open(waUrl(msg), '_blank', 'noopener');
+      });
     })();
   </script>
 </body>
